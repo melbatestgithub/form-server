@@ -42,7 +42,7 @@ router.post('/submit-comment', upload.array('pictures'), async (req, res) => {
       commentTwo,
       email,
       phone,
-      pictures: req.files.map((file) => file.path), // Store file paths
+      pictures: req.files.map((file) => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`),
     };
 
     // Save feedback data to the database using Sequelize
@@ -59,7 +59,7 @@ router.post('/submit-comment', upload.array('pictures'), async (req, res) => {
 });
 
 // You can add the route for retrieving picture data if necessary
-router.get("/get-picture-data", async (req, res) => {
+router.get("/getPicturesWithComment ", async (req, res) => {
   try {
     const feedbackData = await Comment.findAll();
     res.status(200).send({ data: feedbackData });
