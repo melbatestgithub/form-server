@@ -59,7 +59,7 @@ router.post('/submit-comment', upload.array('pictures'), async (req, res) => {
 });
 
 // You can add the route for retrieving picture data if necessary
-router.get("/ ", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const feedbackData = await Comment.findAll();
     res.status(200).send({ data: feedbackData });
