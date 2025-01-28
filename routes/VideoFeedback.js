@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Route to handle video upload
-router.post("/videoFeedback/submit-form", upload.single("video"), async (req, res) => {
+router.post("/submit-form", upload.single("video"), async (req, res) => {
   try {
     const {
       satisfaction,
