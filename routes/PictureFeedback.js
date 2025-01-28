@@ -67,5 +67,43 @@ router.get("/", async (req, res) => {
     res.status(500).send({ message: "Error fetching data", error: error.message });
   }
 });
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params; // Extract the feedback ID from the URL parameters
+
+    if (!id) {
+      return res.status(400).send({ message: "Feedback ID is required." });
+    }
+
+    // Find the feedback entry by ID
+    const feedback = await Comment.findByPk(id);
+    if (!feedback) {
+      return res.status(404).send({ message: "Feedback not found." });
+    }
+
+    // Remove associated picture files from the server
+    if (feedback.pictures && feedback.pictures.length > 0) {
+      const picturePaths = feedback.pictures; // Array of picture URLs
+      picturePaths.forEach((pictureUrl) => {
+        const filePath = path.join(__dirname, 'uploads', path.basename(pictureUrl));
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath); // Delete the file
+        }
+      });
+    }
+
+    // Delete feedback entry from the database
+    await Comment.destroy({ where: { id } });
+
+    res.status(200).send({ message: "Feedback and associated pictures deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting feedback:", error);
+    res.status(500).send({
+      message: "Error deleting feedback",
+      error: error.message,
+    });
+  }
+});
+
 
 module.exports = router;
