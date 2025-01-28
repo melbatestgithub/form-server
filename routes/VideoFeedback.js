@@ -66,4 +66,34 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find the video entry by ID
+    const videoEntry = await Videos.findOne({ where: { id } });
+
+    if (!videoEntry) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    // Delete the video file from the 'uploads' folder
+    const videoPath = path.resolve(videoEntry.video); // Full path to the video file
+    if (fs.existsSync(videoPath)) {
+      fs.unlinkSync(videoPath); // Delete the file
+    } else {
+      console.warn(`File not found: ${videoPath}`);
+    }
+
+    // Delete the entry from the database
+    await Videos.destroy({ where: { id } });
+
+    res.status(200).json({ message: "Video deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting video:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+});
 module.exports = router;
