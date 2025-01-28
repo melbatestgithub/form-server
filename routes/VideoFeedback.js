@@ -17,9 +17,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Route to handle video upload
 router.post("/submit-form", upload.single("video"), async (req, res) => {
   try {
+    console.log("Incoming request body:", req.body);
+    console.log("Uploaded file:", req.file);
+
+    // Validate required fields
+    if (!req.file) {
+      return res.status(400).json({ message: "Video file is required." });
+    }
+
     const {
       satisfaction,
       ambiance,
@@ -29,14 +36,14 @@ router.post("/submit-form", upload.single("video"), async (req, res) => {
       email,
     } = req.body;
 
-    const videoPath = req.file.path; // Save video path
+    const videoPath = req.file.path; // Path to the uploaded video
 
-    // Save data to database
+    // Save data to the database
     const newVideo = await Videos.create({
       satisfaction,
       ambiance,
       selectedType,
-      video: videoPath, // Save video path in database
+      video: videoPath, // Save the file path
       videoFeedback,
       phone,
       email,
