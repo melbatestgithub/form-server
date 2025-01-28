@@ -6,7 +6,11 @@ const pictureFeedback = require('./routes/PictureFeedback');
 const videoFeedback = require('./routes/VideoFeedback');
 const port = 5800;
 const cors=require("cors")
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({
+    origin: '*', // Allow all origins (or specify your frontend URL instead)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
 
 app.use(express.json({ limit: '50mb' })); // Adjust the limit as needed
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
