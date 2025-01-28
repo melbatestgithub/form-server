@@ -16,7 +16,7 @@
         },
         video: {
             type: DataTypes.STRING,
-            allowNull: false,
+          
         },
         videoFeedback:{
         type:DataTypes.STRING,
