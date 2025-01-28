@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const { Videos } = require("../models/VideoFeedback");
+const Videos = require("../models/VideoFeedback");
 
 const router = express.Router();
 
