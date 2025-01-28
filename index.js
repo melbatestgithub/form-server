@@ -4,6 +4,7 @@ const sequlize=require("./db")
 const feedbackRoutes = require('./routes/Feedback');
 const pictureFeedback = require('./routes/PictureFeedback');
 const videoFeedback = require('./routes/VideoFeedback');
+const path = require("path");
 const port = 5800;
 const cors=require("cors")
 app.use(cors({
@@ -17,6 +18,8 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use('/comments', feedbackRoutes);
 app.use('/pictureFeedback', pictureFeedback);
 app.use('/videoFeedback', videoFeedback);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 sequlize.sync()
     .then(() => {
         console.log('Database synced successfully.');
@@ -28,4 +31,5 @@ sequlize.sync()
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
 
