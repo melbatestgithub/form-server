@@ -56,4 +56,14 @@ router.post("/submit-form", upload.single("video"), async (req, res) => {
   }
 });
 
+
+router.get("/", async (req, res) => {
+  try {
+    const feedbackData = await Videos.findAll();
+    res.status(200).send({ data: feedbackData });
+  } catch (error) {
+    res.status(500).send({ message: "Error fetching data", error: error.message });
+  }
+});
+
 module.exports = router;
