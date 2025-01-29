@@ -19,7 +19,8 @@ app.use('/comments', feedbackRoutes);
 app.use('/pictureFeedback', pictureFeedback);
 app.use('/videoFeedback', videoFeedback);
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 sequlize.sync()
     .then(() => {
         console.log('Database synced successfully.');
